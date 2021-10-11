@@ -1,0 +1,45 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    the_movie_db:
+        url_api:
+            base: '%env(TMDB_BASE_URL)%'
+            list_genders: '%env(TMDB_LIST_GENDERS_URL)%'
+            list_movies_discover: '%env(TMDB_LIST_DISCOVER_MOVIE)%'
+            detail_movies: '%env(TMDB_DETAIL_MOVIE)%'
+            search_movie: '%env(TMDB_SEARCH_MOVIE)%'
+        key: '%env(TMDB_API_KEY)%'
+        video_url: '%env(TMDB_VIDEO_URL)%'
+        play_video_url: '%env(TMDB_PLAY_VIDEO)%'
+        youtube_embed_url: '%env(TMDB_YOUTUBE_EMBED_URL)%'
+        image_url: '%env(TMDB_IMAGE_URL)%'
+        list: '%env(TMDB_COVER_LIST_SIZE)%'
+        modal: '%env(TMDB_COVER_MODAL_SIZE)%'
+
+
+
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $tmdbParams: '%the_movie_db%'
+
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

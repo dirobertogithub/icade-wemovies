@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tmdb{% endblock %}
+
+{% block body %}
+    {%  if listMovies is not null %}
+        <section>
+            <div class="container-fluid">
+                <div class="embed-responsive embed-responsive-16by9">
+                    {% if listToDisplay  %}
+                    {% set firstMovie = listMovies.results|first %}
+                    {%  else %}
+                        {% set firstMovie = listMovies %}
+                    {% endif %}
+                    {%  if videoToPlay is not null %}
+                        <iframe width="500" height="320" src="{{ videoToPlay }}" allowfullscreen class="video-embed">
+                        </iframe>
+                    {% else %}
+                        <p class="text-danger">Video non disponible</p>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        <section id="about" class="home-section text-center mb-5">
+            <div class="container-fluid">
+                <div>
+                    <h4 class="card-title">{{ firstMovie.title }}</h4>
+                    <p class="card-text">{{ firstMovie.vote_average}}  ({{ firstMovie.vote_count}} votes)</p>
+                    <p class="card-text"> Titre original  : {{ firstMovie.original_title }}</p>
+                    <p class="card-text">Popularité : {{ firstMovie.popularity }}</p>
+                    <p class="card-text">{{ firstMovie.overview }}</p>
+                </div>
+
+            </div>
+        </section>
+    {% else %}
+        <section>
+            <p class="text-danger">Pas de résultats</p>
+        </section>
+    {% endif %}
+    <section>
+        <div class="row">
+            <div class="form-check col-md-3">
+                <form action="{{ path('list_movies') }}" method="POST"  id="gender-form" enctype="multipart/form-data">
+                {% for gender in listGenders.genres %}
+                    <div class="form-check">
+                        <input class="form-check-input gender-movie"
+                               type="checkbox"
+                               value="{{ gender.id }}"
+                               name="genders[]"
+                               id="gender_{{ gender.id }}"
+                               {%  if gender.id in gendersChecked%} checked {% endif %}
+                        >
+                        <label class="form-check-label" for="gender_{{ gender.id }}">{{ gender.name }}</label>
+                    </div>
+                {% endfor %}
+                </form>
+            </div>
+            <div id="top_rated_movies" class="col-md-9">
+                {%  if listToDisplay %}
+                    {%  if listMovies is not null %}
+                        {% for movie in listMovies.results|slice(1) %}
+                            <div class="card mb-4 bg-light">
+                                <div class="row card-body">
+                                    <div class="col-md-4">
+                                        <img class="poster-mini" src="{{ urlCover ~ movie.poster_path }}" alt="{{ movie.title }}-cover">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h4 class="card-title">{{ movie.title }}</h4>
+                                            <p class="card-text">{{ movie.vote_average}}  ({{ movie.vote_count}} votes)</p>
+                                            <p class="card-text">
+                                                {{ (movie.overview|length > 200) ? movie.overview|slice(0,200)~'...' :  movie.overview}}
+                                            </p>
+                                            <span class="btn btn-primary btn-details" data-url="{{ path('detail_movie', {'movieId': movie.id}) }}">Lire les détails</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            </div>
+            <!--- Modals -->
+
+            <div class="modal fade" id="modal-details" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" >
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

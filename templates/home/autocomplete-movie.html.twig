@@ -1,0 +1,7 @@
+{% for movie in listMovies.results %}
+    <div class="suggestion-movies-div">
+        <a href="{{ path('search_movie', {'movieId': movie.id}) }}">
+        {{ movie.title }}
+            </a>
+    </div>
+{% endfor %}

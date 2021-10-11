@@ -1,0 +1,35 @@
+
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Détails </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <section>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe width="500" height="320" src="{{ detailsVideo }}" allowfullscreen class="video-embed">
+                        </iframe>
+                    </div>
+                    <div>
+                        <div>
+                            <h4 class="">{{ detailsMovie.title }}</h4>
+                            <p> Titre original  : {{ detailsMovie.original_title }}</p>
+
+                            <p>&ensp;Moyenne des votes:  {{ detailsMovie.vote_average}} </p>
+                            <p>{{ detailsMovie.vote_count}} votes</p>
+                            <p>Popularité : {{ detailsMovie.popularity}} </p>
+                            <p>{{ detailsMovie.overview }}</p>
+                            <p> Langage : {{ detailsMovie.original_language }}</p>
+
+                        </div>
+                        <div>
+                            <img src="{{ urlImage ~ detailsMovie.poster_path }}" class="m-lg-2" alt="poster">
+                            <img src="{{ urlImage ~ detailsMovie.backdrop_path }}" class="m-lg-2" alt=""backdop>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
